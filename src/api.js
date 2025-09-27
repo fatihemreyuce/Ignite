@@ -29,3 +29,6 @@ const new_games = `games?dates=${lastYear},${currentDate}&ordering=-released&pag
 export const popularGamesURL = () => `${BASE_URL}${popular_games}&key=031ec46f28b64120aad67fc31b92af7d`;
 export const upcomingGamesURL = () => `${BASE_URL}${upcoming_games}&key=031ec46f28b64120aad67fc31b92af7d`;
 export const newGamesURL = () => `${BASE_URL}${new_games}&key=031ec46f28b64120aad67fc31b92af7d`;
+
+export const gameDetailsURL = (game_id) => `${BASE_URL}games/${game_id}?key=031ec46f28b64120aad67fc31b92af7d`;
+export const gameScreenshotURL = (game_id) => `${BASE_URL}games/${game_id}/screenshots?key=031ec46f28b64120aad67fc31b92af7d`;
