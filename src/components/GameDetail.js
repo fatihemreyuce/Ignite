@@ -75,7 +75,13 @@ const GameDetail = () => {
                             </Media>
                             <Description>
                                 <h3>Description</h3>
-                                <p>{game.description_raw}</p>
+                                <div dangerouslySetInnerHTML={{ __html: game.description_raw }} />
+                                {game.description && game.description !== game.description_raw && (
+                                    <div className="additional-info">
+                                        <h4>Additional Information</h4>
+                                        <div dangerouslySetInnerHTML={{ __html: game.description }} />
+                                    </div>
+                                )}
                             </Description>
                             <Gallery>
                                 <h3>Screenshots ({screenshots?.results?.length || 0})</h3>
@@ -158,6 +164,39 @@ const Media = styled(motion.div)`
 
 const Description = styled(motion.div)`
     margin: 5rem 0rem;
+    
+    h3 {
+        color: #333;
+        margin-bottom: 2rem;
+        font-size: 1.5rem;
+    }
+    
+    h4 {
+        color: #555;
+        margin: 2rem 0 1rem 0;
+        font-size: 1.2rem;
+    }
+    
+    p {
+        line-height: 1.8;
+        color: #666;
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    div {
+        line-height: 1.8;
+        color: #666;
+        font-size: 1rem;
+    }
+    
+    .additional-info {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background: #f8f8f8;
+        border-radius: 0.5rem;
+        border-left: 4px solid #ff7676;
+    }
 `;
 
 const LoadingMessage = styled(motion.div)`
