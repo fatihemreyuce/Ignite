@@ -19,3 +19,9 @@ export const loadGames = () => async (dispatch) => {
         }
     })
 }
+
+export const clearSearch = () => (dispatch) => {
+    dispatch({
+        type: 'CLEAR_SEARCH'
+    })
+}

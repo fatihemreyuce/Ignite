@@ -32,3 +32,5 @@ export const newGamesURL = () => `${BASE_URL}${new_games}&key=031ec46f28b64120aa
 
 export const gameDetailsURL = (game_id) => `${BASE_URL}games/${game_id}?key=031ec46f28b64120aad67fc31b92af7d`;
 export const gameScreenshotURL = (game_id) => `${BASE_URL}games/${game_id}/screenshots?key=031ec46f28b64120aad67fc31b92af7d`;
+
+export const searchGameURL = (game_name) => `${BASE_URL}games?search=${game_name}&key=031ec46f28b64120aad67fc31b92af7d`;

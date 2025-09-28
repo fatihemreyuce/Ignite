@@ -10,6 +10,8 @@ import PlayStationIcon from "../img/playstation.svg";
 import XboxIcon from "../img/xbox.svg";
 import NintendoIcon from "../img/nintendo.svg";
 import smallImage from "../utils";
+import StarEmpty from "../img/star.png";
+import StarFull from "../img/star-full.png";
 
 const GameDetail = () => {
     const {id} = useParams();
@@ -20,6 +22,19 @@ const GameDetail = () => {
     useEffect(() => {
         dispatch(loadDetail(id));
     }, [dispatch, id]);
+
+    const getStars = (rating) => {
+        const star = [];
+        const starRating = Math.floor(rating || 0);
+        for(let i=1;i<=5;i++){
+            if(i<=starRating){
+                star.push(<img src={StarFull} alt="Star" key={i} />);
+            }else{
+                star.push(<img src={StarEmpty} alt="Star" key={i} />);
+            }
+        }
+        return star;
+    };
 
     // Debug için console log
     console.log("Game Detail State:", {game, screenshots, isLoading});
@@ -50,6 +65,7 @@ const GameDetail = () => {
                                 <div className="rating">
                                     <h3>{game.name}</h3>
                                     <p>Rating: {game.rating}/5</p>
+                                    {getStars(game.rating)}
                                     {game.metacritic && <p>Metacritic: {game.metacritic}/100</p>}
                                     <p>Release Date: {game.released}</p>
                                     {game.website && (
@@ -142,6 +158,11 @@ const Stats = styled(motion.div)`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    img {
+        width: 2rem;
+        height: 2rem;
+        display:inline
+    }
 `;
 
 const Info = styled(motion.div)`
