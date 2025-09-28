@@ -302,7 +302,6 @@ const PlatformIcon = styled(motion.div)`
 
 // Platform icon function
 const getPlatformIcon = (platformName) => {
-    console.log('Platform Name:', platformName); // Debug için
     const icons = {
         'PC': <img src={PCIcon} alt="PC" />,
         'PlayStation 5': <img src={PlayStationIcon} alt="PlayStation" />,
