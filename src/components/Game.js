@@ -19,7 +19,7 @@ const Game = ({name,released,id,platform,rating,description,img}) => {
                 <p>Platform: {platform}</p>
                 <p>Rating: {rating}</p>
                 <p>{description}</p>
-                <img src={img ? smallImage(img,640) : ''} alt={name} />
+                {img && <img src={smallImage(img,640)} alt={name} />}
             </Link>
         </StyledGame>
     )

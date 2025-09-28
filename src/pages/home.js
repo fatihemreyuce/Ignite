@@ -77,14 +77,14 @@ const Home = () => {
     useEffect(() => {
       dispatch(loadGames());
     }, [dispatch])
-    const {popular,newGames,upcoming,isLoading,searchedGames} = useSelector(state => state.games);
+    const {popular,newGames,upcoming,isLoading,searchedGames,hasSearched} = useSelector(state => state.games);
     return (
         <GameList>
             {isLoading ? (
                 <LoadingMessage>Yükleniyor...</LoadingMessage>
             ) : (
                 <>
-                    {searchedGames && searchedGames.length > 0 ? (
+                    {hasSearched && searchedGames && searchedGames.length > 0 ? (
                         <SearchResults>
                             <h2>Arama Sonuçları ({searchedGames.length} oyun bulundu)</h2>
                             <Games>
@@ -101,7 +101,7 @@ const Home = () => {
                                 ))}
                             </Games>
                         </SearchResults>
-                    ) : searchedGames && searchedGames.length === 0 ? (
+                    ) : hasSearched && searchedGames && searchedGames.length === 0 ? (
                         <NoResultsMessage>
                             <SearchIcon size={40} />
                             <h2>Oyun Bulunamadı</h2>

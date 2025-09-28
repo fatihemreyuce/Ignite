@@ -4,6 +4,7 @@ const initState = {
     upcoming: [],
     searchedGames: [],
     isLoading: false,
+    hasSearched: false,
 }
 
 const gamesReducer = (state=initState,action) => {
@@ -26,11 +27,13 @@ const gamesReducer = (state=initState,action) => {
                 ...state,
                 searchedGames: action.payload.searchedGames,
                 isLoading: false,
+                hasSearched: true,
             }
         case 'CLEAR_SEARCH':
             return {
                 ...state,
                 searchedGames: [],
+                hasSearched: false,
             }
         default:
             return {

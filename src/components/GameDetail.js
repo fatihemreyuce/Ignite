@@ -1,10 +1,10 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import {motion} from "framer-motion";
 import {useSelector, useDispatch} from "react-redux";
 import {useParams, useNavigate} from "react-router-dom";
 import {loadDetail} from "../actions/detailAction";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, X } from "lucide-react";
 import PCIcon from "../img/pc.svg";
 import PlayStationIcon from "../img/playstation.svg";
 import XboxIcon from "../img/xbox.svg";
@@ -12,12 +12,15 @@ import NintendoIcon from "../img/nintendo.svg";
 import smallImage from "../utils";
 import StarEmpty from "../img/star.png";
 import StarFull from "../img/star-full.png";
+import MacIcon from "../img/macos.svg";
+import LinuxIcon from "../img/linux.svg";
 
 const GameDetail = () => {
     const {id} = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const {game, screenshots, isLoading} = useSelector(state => state.detail);
+    const [selectedScreenshot, setSelectedScreenshot] = useState(null);
     
     useEffect(() => {
         dispatch(loadDetail(id));
@@ -36,15 +39,25 @@ const GameDetail = () => {
         return star;
     };
 
-    // Debug için console log
-    console.log("Game Detail State:", {game, screenshots, isLoading});
-    console.log("Game keys:", game ? Object.keys(game) : "No game");
-    console.log("Screenshots results:", screenshots?.results?.length);
 
     const exitDetailHandler = (e) => {
         const element = e.target;
         if (element.classList.contains("shadow")) {
             navigate("/");
+        }
+    };
+
+    const openScreenshotModal = (screenshot) => {
+        setSelectedScreenshot(screenshot);
+    };
+
+    const closeScreenshotModal = () => {
+        setSelectedScreenshot(null);
+    };
+
+    const modalClickHandler = (e) => {
+        if (e.target.classList.contains("modal-backdrop")) {
+            closeScreenshotModal();
         }
     };
 
@@ -104,7 +117,7 @@ const GameDetail = () => {
                                 {screenshots?.results?.length > 0 ? (
                                     <ScreenshotGrid>
                                         {screenshots.results.map(screen => (
-                                            <ScreenshotItem key={screen.id}>
+                                            <ScreenshotItem key={screen.id} onClick={() => openScreenshotModal(screen)}>
                                                 <img src={screen.image ? smallImage(screen.image, 640) : ''} alt={game.name} />
                                             </ScreenshotItem>
                                         ))}
@@ -119,6 +132,18 @@ const GameDetail = () => {
                     )}
                 </Detail>
             </CardShadow>
+            
+            {/* Screenshot Modal */}
+            {selectedScreenshot && (
+                <ScreenshotModal className="modal-backdrop" onClick={modalClickHandler}>
+                    <ModalContent>
+                        <CloseButton onClick={closeScreenshotModal}>
+                            <X size={24} />
+                        </CloseButton>
+                        <ModalImage src={selectedScreenshot.image} alt={game.name} />
+                    </ModalContent>
+                </ScreenshotModal>
+            )}
         </StyledGameDetail>
     )
 }
@@ -277,6 +302,7 @@ const PlatformIcon = styled(motion.div)`
 
 // Platform icon function
 const getPlatformIcon = (platformName) => {
+    console.log('Platform Name:', platformName); // Debug için
     const icons = {
         'PC': <img src={PCIcon} alt="PC" />,
         'PlayStation 5': <img src={PlayStationIcon} alt="PlayStation" />,
@@ -291,6 +317,10 @@ const getPlatformIcon = (platformName) => {
         'Nintendo DS': <img src={NintendoIcon} alt="Nintendo" />,
         'Nintendo GameCube': <img src={NintendoIcon} alt="Nintendo" />,
         'Nintendo Wii': <img src={NintendoIcon} alt="Nintendo" />,
+        'Mac': <img src={MacIcon} alt="Mac" />,
+        'macOS': <img src={MacIcon} alt="macOS" />,
+        'Apple Macintosh': <img src={MacIcon} alt="Mac" />,
+        'Linux': <img src={LinuxIcon} alt="Linux" />,
     };
     
     return icons[platformName] || <img src={PCIcon} alt="Platform" />;
@@ -341,6 +371,60 @@ const ScreenshotItem = styled(motion.div)`
     &:hover img {
         transform: scale(1.1);
     }
+`;
+
+const ScreenshotModal = styled(motion.div)`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+`;
+
+const ModalContent = styled(motion.div)`
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const CloseButton = styled(motion.button)`
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    z-index: 1001;
+    
+    &:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.1);
+    }
+`;
+
+const ModalImage = styled(motion.img)`
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 0.5rem;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
 `;
 
 

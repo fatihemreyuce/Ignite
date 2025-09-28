@@ -17,7 +17,6 @@ const Nav = () => {
         if (textInput.trim()) {
             dispatch(fetchSearch(textInput));
         }
-        setTextInput("");
     }
     
     const clearSearchResults = () => {
